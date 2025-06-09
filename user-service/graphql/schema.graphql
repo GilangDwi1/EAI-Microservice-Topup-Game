@@ -1,0 +1,29 @@
+scalar DateTime
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  password: String!
+  created_at: DateTime!
+  transactions: [Transaction] @field(resolver: "App\\GraphQL\\Resolvers\\UserResolver@transactions")
+}
+
+type Transaction {
+  id: ID!
+  jumlah_topup: Int
+  total_harga: Int
+  status: String
+  created_at: DateTime
+}
+
+type Query {
+  getUser(id: ID!): User @find(model: "App\\Models\\User")
+  listUsers: [User!]! @all(model: "App\\Models\\User")
+  transactionsByUser(user_id: ID!): [Transaction] @all(model: "App\\Models\\Transaction" scopes: ["byUser"])
+}
+
+type Mutation {
+  createUser(name: String!, email: String!, password: String!): User
+    @create(model: "App\\Models\\User")
+}

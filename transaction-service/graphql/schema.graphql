@@ -1,0 +1,47 @@
+scalar DateTime
+
+type Transaction {
+  id: ID!
+  user_id: ID!
+  game_id: ID!
+  jumlah_topup: Int!
+  total_harga: Int!
+  status: String!
+  created_at: DateTime!
+  updated_at: DateTime!
+  user: User @field(resolver: "App\\GraphQL\\Resolvers\\TransactionResolver@resolveUser")
+  game: Game @field(resolver: "App\\GraphQL\\Resolvers\\TransactionResolver@game")
+}
+
+type Game {
+  id: ID!
+  nama_game: String
+  harga: Float
+  description: String!
+  stock: Int
+}
+
+type User {
+    id: ID!
+    name: String
+    email: String
+}
+
+type TransactionDetail {
+  id: ID
+  jumlah_topup: Int
+  status: String
+  user: User
+  game: Game
+}
+
+type Query {
+  getTransaction(id: ID!): TransactionDetail @field(resolver: "App\\GraphQL\\Queries\\TransactionQuery@getTransaction")
+  listTransactions: [Transaction!]! @field(resolver: "App\\GraphQL\\Queries\\TransactionQuery@listTransactions")
+  listTransactionsByUser(user_id: ID!): [Transaction] @field(resolver: "App\\GraphQL\\Resolvers\\TransactionResolver@byUser")
+}
+
+type Mutation {
+  createTransaction(user_id: ID!, game_id: ID!, jumlah_topup: Int!): Transaction
+    @field(resolver: "App\\GraphQL\\Mutations\\CreateTransaction")
+}

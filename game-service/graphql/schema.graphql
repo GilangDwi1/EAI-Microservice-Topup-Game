@@ -1,0 +1,31 @@
+type Game {
+  id: ID!
+  nama_game: String!
+  publisher: String!
+  description: String!
+  stock: Int!
+  harga: Int
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+type Query {
+  listGames: [Game!]! @all(model: "App\\Models\\Game")
+}
+
+type Mutation {
+  createGame(
+    nama_game: String!
+    publisher: String!
+    description: String!
+    stock: Int!
+    harga: Int
+  ): Game @create(model: "App\\Models\\Game")
+
+  topUpGame(
+    id: ID!
+    amount: Int!
+  ): Game @field(resolver: "App\\GraphQL\\Mutations\\GameMutations@topUpGame")
+
+  reduceStock(id: ID!, amount: Int!): Game @field(resolver: "App\\GraphQL\\Mutations\\ReduceStock")
+}
