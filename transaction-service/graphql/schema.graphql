@@ -28,21 +28,23 @@ type User {
 }
 
 type TransactionDetail {
-  id: ID
-  jumlah_topup: Int
-  total_harga: Int
-  status: String
-  user: User
-  game: Game
+    id: ID
+    jumlah_topup: Int
+    total_harga: Int
+    status: String
+    user: User
+    game: Game
 }
 
 type Query {
-  getTransaction(id: ID!): [Transaction!]! @field(resolver: "App\\GraphQL\\Queries\\TransactionQuery@getTransaction")
-  listTransactions: [Transaction!]! @field(resolver: "App\\GraphQL\\Queries\\TransactionQuery@listTransactions")
-  listTransactionsByUser(user_id: ID!): [Transaction] @field(resolver: "App\\GraphQL\\Resolvers\\TransactionResolver@byUser")
+    getTransaction(id: ID!): [Transaction!]! @field(resolver: "App\\GraphQL\\Queries\\TransactionQuery@getTransaction")
+    listTransactions: [Transaction!]! @field(resolver: "App\\GraphQL\\Queries\\TransactionQuery@listTransactions")
+    listTransactionsByUser(user_id: ID!): [Transaction] @field(resolver: "App\\GraphQL\\Resolvers\\TransactionResolver@byUser")
+    listTransactionsByGame(game_id: ID!): [Transaction] @field(resolver: "App\\GraphQL\\Resolvers\\TransactionResolver@byGame")
+
 }
 
 type Mutation {
-  createTransaction(user_id: ID!, game_id: ID!, jumlah_topup: Int!): Transaction
-    @field(resolver: "App\\GraphQL\\Mutations\\CreateTransaction")
+    createTransaction(user_id: ID!, game_id: ID!, jumlah_topup: Int!): Transaction@field(resolver: "App\\GraphQL\\Mutations\\CreateTransaction")
+    updateTransactionStatus(id: ID!, status: String!): Transaction@field(resolver: "App\\GraphQL\\Mutations\\TransactionMutation@updateStatus")
 }

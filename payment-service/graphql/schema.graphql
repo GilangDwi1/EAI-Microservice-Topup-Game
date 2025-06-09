@@ -1,0 +1,23 @@
+scalar DateTime
+
+type Payment {
+  id: ID!
+  id_transaction: ID!
+  jenis_pembayaran: String!
+  total_pembayaran: Int!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+type Query {
+  listPayments: [Payment!]! @all(model: "App\\Models\\Payment")
+  getPayment(id: ID!): Payment @field(resolver: "App\\GraphQL\\Queries\\PaymentQuery@getPayment")
+}
+
+type Mutation {
+  createPayment(
+    id_transaction: ID!
+    jenis_pembayaran: String!
+    total_pembayaran: Int!
+  ): Payment @field(resolver: "App\\GraphQL\\Mutations\\PaymentMutation@create")
+}

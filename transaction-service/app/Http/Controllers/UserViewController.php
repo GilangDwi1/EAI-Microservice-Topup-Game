@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Http;
+use App\Models\Transaction;
 
 class UserViewController extends Controller
 {
@@ -44,23 +45,8 @@ class UserViewController extends Controller
 
         $user = $userResp->json('data.getUser');
 
-        // Ambil transaksi user
-        $trxResp = Http::post('http://localhost:4001/graphql', [
-            'query' => '
-                query ($user_id: ID!) {
-                    transactionsByUser(user_id: $user_id) {
-                        id
-                        jumlah_topup
-                        total_harga
-                        status
-                        created_at
-                    }
-                }
-            ',
-            'variables' => ['user_id' => $id],
-        ]);
-
-        $transactions = $trxResp->json('data.transactionsByUser') ?? [];
+        // Ambil transaksi dari database lokal
+        $transactions = Transaction::where('user_id', $id)->get();
 
         return view('show', compact('user', 'transactions'));
     }

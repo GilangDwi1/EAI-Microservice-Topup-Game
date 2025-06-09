@@ -30,9 +30,14 @@ class TransactionResolver
 
         return $response->json();
     }
-    
+
     public function byUser($_, array $args)
     {
         return Transaction::where('user_id', $args['user_id'])->get();
+    }
+
+    public function byGame($_, array $args)
+    {
+        return \App\Models\Transaction::where('game_id', $args['game_id'])->get();
     }
 }
