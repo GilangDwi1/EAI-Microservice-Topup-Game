@@ -13,7 +13,7 @@ class TransactionQuery
 
     public function getTransaction($_, array $args)
     {
-        $transaction = Transaction::findOrFail($args['id']);
+        return Transaction::where('id', $args['id'])->get();
 
         // Ambil data user dari user-service
         $userResponse = Http::get('http://localhost:4001/api/users/' . $transaction->user_id);

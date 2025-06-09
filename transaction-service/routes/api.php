@@ -1,8 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Models\Transaction;
+use App\Http\Controllers\Api\TransactionController;
 
-Route::get('/transactions/user/{id}', function ($id) {
-    return Transaction::where('user_id', $id)->get();
-});
+Route::get('/transactions', [TransactionController::class, 'getByUser']);

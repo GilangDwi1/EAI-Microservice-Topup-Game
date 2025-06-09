@@ -3,27 +3,28 @@
 namespace App\GraphQL\Resolvers;
 
 use Illuminate\Support\Facades\Http;
+use App\Models\User;
 
 class UserResolver
 {
+    public function getUser($_, array $args)
+    {
+        return \App\Models\User::find($args['id']);
+    }
+
     public function transactions($root, array $args)
     {
-        $userId = $root['id'];
+        // Ambil transaksi dari transaction-service berdasarkan user_id
+        $userId = $root->id;
 
-        $response = Http::post('http://localhost:5000/graphql', [
-            'query' => '
-                query {
-                    listTransactionsByUser(user_id: '.$userId.') {
-                        id
-                        jumlah_topup
-                        total_harga
-                        status
-                        created_at
-                    }
-                }
-            ',
+        $response = Http::get("http://localhost:4002/api/transactions", [
+            'user_id' => $userId
         ]);
 
-        return $response->json()['data']['listTransactionsByUser'] ?? [];
+        if ($response->successful()) {
+            return $response->json(); // pastikan API return list transaksi
+        }
+
+        return [];
     }
 }

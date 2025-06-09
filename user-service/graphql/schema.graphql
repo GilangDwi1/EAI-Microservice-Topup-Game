@@ -18,7 +18,7 @@ type Transaction {
 }
 
 type Query {
-  getUser(id: ID!): User @find(model: "App\\Models\\User")
+  getUser(id: ID!): User @field(resolver: "App\\GraphQL\\Resolvers\\UserResolver@getUser")
   listUsers: [User!]! @all(model: "App\\Models\\User")
   transactionsByUser(user_id: ID!): [Transaction] @all(model: "App\\Models\\Transaction" scopes: ["byUser"])
 }

@@ -1,7 +1,5 @@
 <?php
+use App\Http\Controllers\UserViewController;
 
-use Illuminate\Support\Facades\Route;
-
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/users', [UserViewController::class, 'index'])->name('users.index');
+Route::get('/users/{id}', [UserViewController::class, 'show'])->name('users.show');

@@ -30,13 +30,14 @@ type User {
 type TransactionDetail {
   id: ID
   jumlah_topup: Int
+  total_harga: Int
   status: String
   user: User
   game: Game
 }
 
 type Query {
-  getTransaction(id: ID!): TransactionDetail @field(resolver: "App\\GraphQL\\Queries\\TransactionQuery@getTransaction")
+  getTransaction(id: ID!): [Transaction!]! @field(resolver: "App\\GraphQL\\Queries\\TransactionQuery@getTransaction")
   listTransactions: [Transaction!]! @field(resolver: "App\\GraphQL\\Queries\\TransactionQuery@listTransactions")
   listTransactionsByUser(user_id: ID!): [Transaction] @field(resolver: "App\\GraphQL\\Resolvers\\TransactionResolver@byUser")
 }
